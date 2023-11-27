@@ -47,6 +47,7 @@ async function getLaureatByIdAsync(id) {
         throw error;
     }
 }
+
 const getMultiLaureat = (count, callback) => {
     getMultiLaureatAsync(count)
         .then(res => {
@@ -73,9 +74,35 @@ async function getMultiLaureatAsync(count) {
         throw error;
     }
 }
+const getLaureatByYear = (year, callback) => {
+    getLaureatByYearAsync(year)
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function getLaureatByYearAsync(year) {
+    try {
+        const conn = await pool.connect();
+        const result = await conn.query("SELECT count(pa.laureat_id) as nb_laureat\n"  +
+            "FROM participe pa\n" +
+            "JOIN prix p on p.id_prix = pa.prix_id\n" +
+            "WHERE p.year = $1", [year]);
+        conn.release();
+        return result.rows;
+    } catch (error) {
+        console.error('Error in getLaureatByYearAsync:', error);
+        throw error;
+    }
+}
 
 module.exports = {
     getAllLaureat: getAllLaureat,
     getLaureatById:getLaureatById,
-    getMultiLaureat:getMultiLaureat
+    getMultiLaureat:getMultiLaureat,
+    getLaureatByYear:getLaureatByYear
 }

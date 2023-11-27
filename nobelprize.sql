@@ -56,4 +56,7 @@ HAVING COUNT(prix_id) > 1;
 
 SELECT libelle FROM categorie;
 
-
+SELECT count(pa.laureat_id)
+FROM participe pa
+JOIN prix p on p.id_prix = pa.prix_id
+WHERE p.year = 2013
