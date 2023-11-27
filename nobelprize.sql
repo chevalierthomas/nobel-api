@@ -36,7 +36,7 @@ CREATE TABLE participe (
     FOREIGN KEY (prix_id) REFERENCES prix(id_prix)
 );
 
-SELECT * FROM laureat;
+SELECT * FROM laureat WHERE id_laureat=1;
 SELECT * FROM prix;
 SELECT * FROM categorie ;
 SELECT * FROM participe;
