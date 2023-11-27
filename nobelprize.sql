@@ -14,7 +14,7 @@ CREATE TABLE laureat (
 
 CREATE TABLE categorie (
     id_categorie SERIAL PRIMARY KEY,
-    libelle VARCHAR(255)
+    libelle VARCHAR(255) UNIQUE
 );
 
 
@@ -36,6 +36,7 @@ CREATE TABLE participe (
     FOREIGN KEY (prix_id) REFERENCES prix(id_prix)
 );
 
-INSERT INTO laureat(id_laureat,surname,firstname)
-VALUES ($1,$2,$3)
-;
+SELECT * FROM laureat;
+SELECT * FROM prix;
+SELECT * FROM categorie ;
+SELECT id_categorie FROM categorie WHERE libelle='medicine';
