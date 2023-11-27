@@ -52,3 +52,8 @@ FROM participe
 JOIN laureat l on participe.laureat_id = l.id_laureat
 GROUP BY l.firstname,l.surname
 HAVING COUNT(prix_id) > 1;
+
+
+SELECT libelle FROM categorie;
+
+

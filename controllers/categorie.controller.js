@@ -12,3 +12,13 @@ exports.getCategorie = (req, res) => {
         }
     })
 }
+exports.getCategorieWithMostLeaureat = (req, res) => {
+    categorieService.getCategorieWithMostLeaureat((error, data) => {
+        if (error) {
+            return res.status(500).send("Internal error");
+        }
+        else {
+            return res.status(200).send(data);
+        }
+    })
+}
