@@ -41,3 +41,14 @@ SELECT * FROM prix;
 SELECT * FROM categorie ;
 SELECT * FROM participe;
 SELECT id_categorie FROM categorie WHERE libelle='medicine';
+
+
+SELECT * FROM participe GROUP BY laureat_id,prix_id HAVING count(laureat_id)=2 ;
+
+SELECT * FROM laureat WHERE firstname='Marie';
+
+SELECT l.firstname,l.surname
+FROM participe
+JOIN laureat l on participe.laureat_id = l.id_laureat
+GROUP BY l.firstname,l.surname
+HAVING COUNT(prix_id) > 1;
