@@ -39,4 +39,5 @@ CREATE TABLE participe (
 SELECT * FROM laureat;
 SELECT * FROM prix;
 SELECT * FROM categorie ;
+SELECT * FROM participe;
 SELECT id_categorie FROM categorie WHERE libelle='medicine';
