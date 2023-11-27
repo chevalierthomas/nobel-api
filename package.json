@@ -1,0 +1,14 @@
+{
+  "name": "projet1",
+  "version": "1.0.0",
+  "description": "projet pour les prix nobels",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Chevalier et Timon Dubreuil",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.11.3"
+  }
+}
