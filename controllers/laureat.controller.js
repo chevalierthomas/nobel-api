@@ -85,3 +85,18 @@ exports.deleteLaureatById = (req, res) => {
         }
     })
 }
+
+exports.updateLaureatMotivation = (req, res) => {
+    const id = req.query.id;
+    const year = req.query.year;
+    const category = req.query.category;  // Corrigé la faute de frappe dans 'category'
+    const motivation = req.query.motivation;
+    console.log(id,year,category,motivation)
+    laureatService.updateLaureatMotivation(id, year, category, motivation, (error, data) => {
+        if (error) {
+            return res.status(500).send("Internal error");
+        } else {
+            return res.status(200).send(data);
+        }
+    });
+};

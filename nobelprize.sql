@@ -91,3 +91,13 @@ DELETE FROM laureat WHERE id_laureat = $1;
 SELECT * FROM laureat WHERE id_laureat = 1;
 
 SELECT * from participe WHERE laureat_id = 1;
+
+
+SELECT * FROM participe JOIN prix p on p.id_prix = participe.prix_id JOIN categorie c on p.categorie_id = c.id_categorie;
+
+
+SELECT motivation
+FROM participe
+JOIN prix p on p.id_prix = participe.prix_id
+JOIN categorie c on p.categorie_id = c.id_categorie
+WHERE participe.laureat_id=1029 AND p.year=2023 AND c.libelle = 'chemistry'

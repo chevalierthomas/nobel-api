@@ -192,6 +192,36 @@ async function deleteLaureatByIdAsync(id) {
     }
 }
 
+const updateLaureatMotivation = (id,year,catogory,motivation, callback) => {
+    updateLaureatMotivationAsync(id,year,catogory,motivation)
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function updateLaureatMotivationAsync(id, year, category, motivation) {
+    try {
+        const conn = await pool.connect();
+        const query = "UPDATE participe\n" +
+            "            SET motivation = $1\n" +
+            "            FROM prix p\n" +
+            "            JOIN categorie c ON p.categorie_id = c.id_categorie\n" +
+            "            WHERE participe.laureat_id = $2 AND p.year = $3 AND c.libelle = $4"
+        ;
+        const result = await conn.query(query, [motivation, id, year, category]);
+        conn.release();
+        return result.rows;
+    } catch (error) {
+        console.error('Error in updateLaureatMotivationByIdAsync:', error);
+        throw error;
+    }
+}
+
+
 
 module.exports = {
     getAllLaureat: getAllLaureat,
@@ -200,5 +230,6 @@ module.exports = {
     getLaureatByYear:getLaureatByYear,
     getYearWithoutLaureat:getYearWithoutLaureat,
     getNumberOfLaureatByYear:getNumberOfLaureatByYear,
-    deleteLaureatById:deleteLaureatById
+    deleteLaureatById:deleteLaureatById,
+    updateLaureatMotivation:updateLaureatMotivation
 }
