@@ -60,3 +60,22 @@ SELECT count(pa.laureat_id)
 FROM participe pa
 JOIN prix p on p.id_prix = pa.prix_id
 WHERE p.year = 2013
+
+
+SELECT DISTINCT year
+FROM prix
+WHERE year NOT IN (SELECT DISTINCT year FROM prix);
+
+
+SELECT * FROM prix WHERE year =1942;
+
+SELECT DISTINCT year
+FROM prix
+
+WHERE overall_motivation LIKE '%No Nobel Prize was awarded this year%';
+
+SELECT year
+FROM prix
+GROUP BY year
+HAVING COUNT(*) = SUM(CASE WHEN overall_motivation LIKE '%No Nobel Prize was awarded this year%' THEN 1 ELSE 0 END);
+

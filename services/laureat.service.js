@@ -39,7 +39,7 @@ const getLaureatById = (id, callback) => {
 async function getLaureatByIdAsync(id) {
     try {
         const conn = await pool.connect();
-        const result = await conn.query("SELECT * FROM laureat WHERE id_laureat = $1", [id]);
+        const result = await conn.query("SELECT * FROM laureat WHERE id_laureat = $1;", [id]);
         conn.release();
         return result.rows;
     } catch (error) {
@@ -91,7 +91,7 @@ async function getLaureatByYearAsync(year) {
         const result = await conn.query("SELECT count(pa.laureat_id) as nb_laureat\n"  +
             "FROM participe pa\n" +
             "JOIN prix p on p.id_prix = pa.prix_id\n" +
-            "WHERE p.year = $1", [year]);
+            "WHERE p.year = $1;", [year]);
         conn.release();
         return result.rows;
     } catch (error) {
@@ -100,9 +100,36 @@ async function getLaureatByYearAsync(year) {
     }
 }
 
+const getYearWithoutLaureat = (callback) => {
+    getYearWithoutLaureatAsync()
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function getYearWithoutLaureatAsync() {
+    try {
+        const conn = await pool.connect();
+        const result = await conn.query("SELECT year\n" +
+            "FROM prix\n" +
+            "GROUP BY year\n" +
+            "HAVING COUNT(*) = SUM(CASE WHEN overall_motivation LIKE '%No Nobel Prize was awarded this year%' THEN 1 ELSE 0 END);");
+        conn.release();
+        return result.rows;
+    } catch (error) {
+        console.error('Error in getAllLaureatAsync:', error);
+        throw error;
+    }
+}
+
 module.exports = {
     getAllLaureat: getAllLaureat,
     getLaureatById:getLaureatById,
     getMultiLaureat:getMultiLaureat,
-    getLaureatByYear:getLaureatByYear
+    getLaureatByYear:getLaureatByYear,
+    getYearWithoutLaureat:getYearWithoutLaureat
 }
