@@ -12,8 +12,7 @@ router.get("/sort-number-laureat-by-year", laureatController.getNumberOfLaureatB
 router.delete("/delete/:id", laureatController.deleteLaureatById)
 router.patch("/update", laureatController.updateLaureatMotivation);
 router.get("/search-by-name/:name", laureatController.getNameBySearch);
-router.get("/search-by-name/:name", laureatController.getNameBySearch);
-
+router.get("/pagination", laureatController.getPagination);
 router.get("/", laureatController.getAllLaureat)
 
 

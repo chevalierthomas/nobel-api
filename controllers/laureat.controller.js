@@ -111,3 +111,17 @@ exports.updateLaureatMotivation = (req, res) => {
         }
     });
 };
+
+
+exports.getPagination = (req, res) => {
+    const page = parseInt(req.query.page, 10) || 1; // Valeur par défaut à 1 si non spécifié
+    const limit = parseInt(req.query.limit, 10) || 10; // Valeur par défaut à 10 si non spécifié
+    console.log(page,limit)
+    laureatService.getPagination(page,limit, (error, data) => {
+        if (error) {
+            return res.status(500).send("Internal error");
+        } else {
+            return res.status(200).send(data);
+        }
+    });
+};

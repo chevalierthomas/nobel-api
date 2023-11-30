@@ -253,6 +253,33 @@ async function updateLaureatMotivationAsync(id, year, category, motivation) {
     }
 }
 
+const getPagination = (page,limit, callback) => {
+    getPaginationAsync(page,limit)
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function getPaginationAsync(page,limit) {
+    try {
+        const conn = await pool.connect();
+
+        const offset = (page - 1) * limit;
+
+        const result = await conn.query("SELECT * FROM laureat LIMIT $1 OFFSET $2", [limit, offset]);
+        conn.release();
+
+        return result.rows;
+    } catch (error) {
+        console.error('Error in updateLaureatMotivationByIdAsync:', error);
+        throw error;
+    }
+}
+
 
 
 module.exports = {
@@ -264,5 +291,6 @@ module.exports = {
     getNumberOfLaureatByYear:getNumberOfLaureatByYear,
     deleteLaureatById:deleteLaureatById,
     updateLaureatMotivation:updateLaureatMotivation,
-    getNameBySearch:getNameBySearch
+    getNameBySearch:getNameBySearch,
+    getPagination:getPagination
 }

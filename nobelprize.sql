@@ -113,3 +113,12 @@ GROUP BY l.id_laureat;
 
 SELECT *
 FROM laureat WHERE surname='Curie'
+
+SELECT * FROM laureat
+ORDER BY id_laureat
+LIMIT 10 OFFSET 1;
+
+
+SELECT * FROM laureat
+ORDER BY id_laureat
+LIMIT 20;
