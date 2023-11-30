@@ -1,7 +1,6 @@
 const pool = require("../database/db");
 const {as} = require("pg-promise");
 
-
 const getCategorie = (callback) => {
     getCategorieAsync()
         .then(res => {

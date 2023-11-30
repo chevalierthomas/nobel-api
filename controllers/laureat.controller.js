@@ -1,7 +1,6 @@
 const laureatService = require("../services/laureat.service");
 const {query} = require("express");
 
-
 exports.getAllLaureat = (req, res) => {
     laureatService.getAllLaureat((error, data) => {
         if (error) {
@@ -100,7 +99,7 @@ exports.deleteLaureatById = (req, res) => {
 exports.updateLaureatMotivation = (req, res) => {
     const id = req.query.id;
     const year = req.query.year;
-    const category = req.query.category;  // Corrigé la faute de frappe dans 'category'
+    const category = req.query.category;
     const motivation = req.query.motivation;
     console.log(id,year,category,motivation)
     laureatService.updateLaureatMotivation(id, year, category, motivation, (error, data) => {
@@ -112,10 +111,9 @@ exports.updateLaureatMotivation = (req, res) => {
     });
 };
 
-
 exports.getPagination = (req, res) => {
-    const page = parseInt(req.query.page, 10) || 1; // Valeur par défaut à 1 si non spécifié
-    const limit = parseInt(req.query.limit, 10) || 10; // Valeur par défaut à 10 si non spécifié
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
     console.log(page,limit)
     laureatService.getPagination(page,limit, (error, data) => {
         if (error) {

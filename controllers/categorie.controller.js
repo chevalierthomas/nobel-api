@@ -1,7 +1,6 @@
 const categorieService = require("../services/categorie.service");
 const {query} = require("express");
 
-
 exports.getCategorie = (req, res) => {
     categorieService.getCategorie((error, data) => {
         if (error) {
@@ -12,6 +11,7 @@ exports.getCategorie = (req, res) => {
         }
     })
 }
+
 exports.getCategorieWithMostLeaureat = (req, res) => {
     categorieService.getCategorieWithMostLeaureat((error, data) => {
         if (error) {

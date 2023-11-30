@@ -1,7 +1,6 @@
 const pool = require("../database/db");
 const {as} = require("pg-promise");
 
-
 const getAllLaureat = (callback) => {
     getAllLaureatAsync()
         .then(res => {
@@ -223,7 +222,6 @@ async function getNameBySearchAsync(name) {
     }
 }
 
-
 const updateLaureatMotivation = (id,year,catogory,motivation, callback) => {
     updateLaureatMotivationAsync(id,year,catogory,motivation)
         .then(res => {
@@ -267,20 +265,15 @@ const getPagination = (page,limit, callback) => {
 async function getPaginationAsync(page,limit) {
     try {
         const conn = await pool.connect();
-
         const offset = (page - 1) * limit;
-
         const result = await conn.query("SELECT * FROM laureat LIMIT $1 OFFSET $2", [limit, offset]);
         conn.release();
-
         return result.rows;
     } catch (error) {
-        console.error('Error in updateLaureatMotivationByIdAsync:', error);
+        console.error('Error in getPaginationAsync:', error);
         throw error;
     }
 }
-
-
 
 module.exports = {
     getAllLaureat: getAllLaureat,

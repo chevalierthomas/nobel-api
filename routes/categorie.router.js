@@ -5,5 +5,4 @@ const categorieController = require('../controllers/categorie.controller');
 router.get("/", categorieController.getCategorie)
 router.get("/most-laureat", categorieController.getCategorieWithMostLeaureat)
 
-
 module.exports = router;
