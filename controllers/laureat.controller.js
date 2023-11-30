@@ -61,3 +61,27 @@ exports.getYearWithoutLaureat = (req, res) => {
     })
 }
 
+exports.getNumberOfLaureatByYear = (req, res) => {
+    const sortType = req.query.sort;
+    laureatService.getNumberOfLaureatByYear(sortType, (error, data) => {
+        if (error) {
+            return res.status(500).send("Internal error");
+        }
+        else {
+            return res.status(200).send(data);
+        }
+    })
+}
+
+exports.deleteLaureatById = (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    laureatService.deleteLaureatById(id, (error, data) => {
+        if (error) {
+            return res.status(500).send("Internal error");
+        }
+        else {
+            return res.status(200).send(data);
+        }
+    })
+}

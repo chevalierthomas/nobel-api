@@ -23,7 +23,7 @@ CREATE TABLE prix (
     year INT,
     overall_motivation TEXT,
     categorie_id INT,
-    FOREIGN KEY (categorie_id) REFERENCES categorie (id_categorie)
+    FOREIGN KEY (categorie_id) REFERENCES categorie (id_categorie) ON DELETE CASCADE
 );
 
 CREATE TABLE participe (
@@ -32,8 +32,8 @@ CREATE TABLE participe (
     motivation TEXT,
     investissement INT,
     PRIMARY KEY (laureat_id, prix_id),
-    FOREIGN KEY (laureat_id) REFERENCES laureat(id_laureat),
-    FOREIGN KEY (prix_id) REFERENCES prix(id_prix)
+    FOREIGN KEY (laureat_id) REFERENCES laureat(id_laureat) ON DELETE CASCADE,
+    FOREIGN KEY (prix_id) REFERENCES prix(id_prix)  ON DELETE CASCADE
 );
 
 SELECT * FROM laureat WHERE id_laureat=1;
@@ -79,3 +79,15 @@ FROM prix
 GROUP BY year
 HAVING COUNT(*) = SUM(CASE WHEN overall_motivation LIKE '%No Nobel Prize was awarded this year%' THEN 1 ELSE 0 END);
 
+
+SELECT count(participe.laureat_id) as "nb_laureat", p.year
+from participe
+JOIN prix p on participe.prix_id = p.id_prix
+GROUP BY p.year
+ORDER BY count(participe.laureat_id) DESC
+
+DELETE FROM laureat WHERE id_laureat = $1;
+
+SELECT * FROM laureat WHERE id_laureat = 1;
+
+SELECT * from participe WHERE laureat_id = 1;

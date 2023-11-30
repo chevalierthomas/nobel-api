@@ -100,6 +100,49 @@ async function getLaureatByYearAsync(year) {
     }
 }
 
+const getNumberOfLaureatByYear = (sortType, callback) => {
+    getNumberOfLaureatByYearAsync(sortType)
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function getNumberOfLaureatByYearAsync(sortType) {
+    try {
+
+        const conn = await pool.connect();
+
+        if(sortType==='asc_laureates'){
+            const result = await conn.query("SELECT count(participe.laureat_id) as \"nb_laureat\", p.year\n" +
+                "from participe\n" +
+                "JOIN prix p on participe.prix_id = p.id_prix\n" +
+                "GROUP BY p.year\n" +
+                "ORDER BY count(participe.laureat_id) ASC");
+            conn.release();
+            return result.rows;
+        }
+
+        if(sortType==='desc_laureates'){
+            const result = await conn.query("SELECT count(participe.laureat_id) as \"nb_laureat\", p.year\n" +
+                "from participe\n" +
+                "JOIN prix p on participe.prix_id = p.id_prix\n" +
+                "GROUP BY p.year\n" +
+                "ORDER BY count(participe.laureat_id) DESC");
+            conn.release();
+            return result.rows;
+        }
+
+
+    } catch (error) {
+        console.error('Error in getLaureatByYearAsync:', error);
+        throw error;
+    }
+}
+
 const getYearWithoutLaureat = (callback) => {
     getYearWithoutLaureatAsync()
         .then(res => {
@@ -121,15 +164,41 @@ async function getYearWithoutLaureatAsync() {
         conn.release();
         return result.rows;
     } catch (error) {
-        console.error('Error in getAllLaureatAsync:', error);
+        console.error('Error in getYearWithoutLaureatAsync:', error);
         throw error;
     }
 }
+
+const deleteLaureatById = (id, callback) => {
+    deleteLaureatByIdAsync(id)
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function deleteLaureatByIdAsync(id) {
+    try {
+        const conn = await pool.connect();
+        const result = await conn.query("DELETE FROM laureat WHERE id_laureat = $1;", [id]);
+        conn.release();
+        return result.rows;
+    } catch (error) {
+        console.error('Error in deleteLaureatByIdAsync:', error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     getAllLaureat: getAllLaureat,
     getLaureatById:getLaureatById,
     getMultiLaureat:getMultiLaureat,
     getLaureatByYear:getLaureatByYear,
-    getYearWithoutLaureat:getYearWithoutLaureat
+    getYearWithoutLaureat:getYearWithoutLaureat,
+    getNumberOfLaureatByYear:getNumberOfLaureatByYear,
+    deleteLaureatById:deleteLaureatById
 }
