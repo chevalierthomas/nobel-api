@@ -37,6 +37,17 @@ exports.getMultiLaureat = (req, res) => {
     })
 }
 
+exports.getNameBySearch = (req, res) => {
+    const name = req.params.name;
+    laureatService.getNameBySearch(name, (error, data) => {
+        if (error) {
+            return res.status(500).send("Internal error");
+        }
+        else {
+            return res.status(200).send(data);
+        }
+    })
+}
 
 exports.getLaureatByYear = (req, res) => {
     const year = req.params.year;

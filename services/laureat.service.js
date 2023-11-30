@@ -192,6 +192,38 @@ async function deleteLaureatByIdAsync(id) {
     }
 }
 
+const getNameBySearch = (name, callback) => {
+
+    getNameBySearchAsync(name)
+        .then(res => {
+            callback(null, res);
+        })
+        .catch(error => {
+            console.log(error);
+            callback(error, null);
+        });
+}
+
+async function getNameBySearchAsync(name) {
+    try {
+        console.log(name)
+        const conn = await pool.connect();
+        const query = "SELECT l.id_laureat, l.surname, l.firstname, COUNT(p.id_prix) AS total_prix_nobel\n" +
+            "            FROM laureat l\n" +
+            "            LEFT JOIN participe pt ON l.id_laureat = pt.laureat_id\n" +
+            "            LEFT JOIN prix p ON pt.prix_id = p.id_prix\n" +
+            "            WHERE LOWER(l.surname) LIKE LOWER($1)\n" +
+            "            GROUP BY l.id_laureat;"
+        const result = await conn.query(query, [`%${name}%`]);
+        conn.release();
+        return result.rows;
+    } catch (error) {
+        console.error('Error in deleteLaureatByIdAsync:', error);
+        throw error;
+    }
+}
+
+
 const updateLaureatMotivation = (id,year,catogory,motivation, callback) => {
     updateLaureatMotivationAsync(id,year,catogory,motivation)
         .then(res => {
@@ -231,5 +263,6 @@ module.exports = {
     getYearWithoutLaureat:getYearWithoutLaureat,
     getNumberOfLaureatByYear:getNumberOfLaureatByYear,
     deleteLaureatById:deleteLaureatById,
-    updateLaureatMotivation:updateLaureatMotivation
+    updateLaureatMotivation:updateLaureatMotivation,
+    getNameBySearch:getNameBySearch
 }

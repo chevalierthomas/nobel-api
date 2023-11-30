@@ -100,4 +100,16 @@ SELECT motivation
 FROM participe
 JOIN prix p on p.id_prix = participe.prix_id
 JOIN categorie c on p.categorie_id = c.id_categorie
-WHERE participe.laureat_id=1029 AND p.year=2023 AND c.libelle = 'chemistry'
+WHERE participe.laureat_id=1029 AND p.year=2023 AND c.libelle = 'chemistry';
+
+SELECT l.id_laureat, l.surname, l.firstname, COUNT(p.id_prix) AS total_prix_nobel
+FROM laureat l
+         LEFT JOIN participe pt ON l.id_laureat = pt.laureat_id
+         LEFT JOIN prix p ON pt.prix_id = p.id_prix
+WHERE LOWER(l.surname) LIKE LOWER('%cu%')
+GROUP BY l.id_laureat;
+
+
+
+SELECT *
+FROM laureat WHERE surname='Curie'
