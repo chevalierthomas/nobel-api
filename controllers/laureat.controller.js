@@ -25,8 +25,7 @@ exports.getLaureatById = (req, res) => {
 }
 
 exports.getMultiLaureat = (req, res) => {
-    const count = req.params.count;
-    laureatService.getMultiLaureat(count, (error, data) => {
+    laureatService.getMultiLaureat((error, data) => {
         if (error) {
             return res.status(500).send("Internal error");
         }
@@ -49,8 +48,7 @@ exports.getNameBySearch = (req, res) => {
 }
 
 exports.getLaureatByYear = (req, res) => {
-    const year = req.params.year;
-    laureatService.getLaureatByYear(year, (error, data) => {
+    laureatService.getLaureatByYear((error, data) => {
         if (error) {
             return res.status(500).send("Internal error");
         }

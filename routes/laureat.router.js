@@ -3,8 +3,8 @@ var router = express.Router();
 const laureatController = require('../controllers/laureat.controller');
 
 router.get("/get-by-id/:id", laureatController.getLaureatById)
-router.get("/multi/:count", laureatController.getMultiLaureat)
-router.get("/nb-by-year/:year", laureatController.getLaureatByYear)
+router.get("/multi", laureatController.getMultiLaureat)
+router.get("/nb-by-year", laureatController.getLaureatByYear)
 router.get("/year-without-laureat", laureatController.getYearWithoutLaureat)
 router.get("/sort-number-laureat-by-year", laureatController.getNumberOfLaureatByYear)
 router.delete("/delete/:id", laureatController.deleteLaureatById)

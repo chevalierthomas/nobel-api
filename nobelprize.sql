@@ -56,10 +56,11 @@ HAVING COUNT(prix_id) > 1;
 
 SELECT libelle FROM categorie;
 
-SELECT count(pa.laureat_id)
+SELECT count(pa.laureat_id) as "nb_laureat", p.year
 FROM participe pa
 JOIN prix p on p.id_prix = pa.prix_id
-WHERE p.year = 2013
+GROUP BY p.year
+ORDER BY p.year;
 
 
 SELECT DISTINCT year
@@ -122,3 +123,10 @@ LIMIT 10 OFFSET 1;
 SELECT * FROM laureat
 ORDER BY id_laureat
 LIMIT 20;
+
+
+SELECT l.surname, l.surname, c.libelle, p.year, participe.motivation  FROM participe
+JOIN prix p on participe.prix_id = p.id_prix
+JOIN laureat l on participe.laureat_id = l.id_laureat
+JOIN categorie c on p.categorie_id = c.id_categorie
+where laureat_id = 6

@@ -38,7 +38,11 @@ const getLaureatById = (id, callback) => {
 async function getLaureatByIdAsync(id) {
     try {
         const conn = await pool.connect();
-        const result = await conn.query("SELECT * FROM laureat WHERE id_laureat = $1;", [id]);
+        const result = await conn.query("SELECT l.surname, l.firstname, c.libelle, p.year, participe.motivation  FROM participe\n" +
+            "JOIN prix p on participe.prix_id = p.id_prix\n" +
+            "JOIN laureat l on participe.laureat_id = l.id_laureat\n" +
+            "JOIN categorie c on p.categorie_id = c.id_categorie\n" +
+            "where laureat_id = $1\n", [id]);
         conn.release();
         return result.rows;
     } catch (error) {
@@ -47,8 +51,8 @@ async function getLaureatByIdAsync(id) {
     }
 }
 
-const getMultiLaureat = (count, callback) => {
-    getMultiLaureatAsync(count)
+const getMultiLaureat = ( callback) => {
+    getMultiLaureatAsync()
         .then(res => {
             callback(null, res);
         })
@@ -58,14 +62,14 @@ const getMultiLaureat = (count, callback) => {
         });
 }
 
-async function getMultiLaureatAsync(count) {
+async function getMultiLaureatAsync() {
     try {
         const conn = await pool.connect();
         const result = await conn.query("SELECT l.firstname,l.surname\n" +
             "FROM participe\n" +
             "JOIN laureat l on participe.laureat_id = l.id_laureat\n" +
             "GROUP BY l.firstname,l.surname\n" +
-            "HAVING COUNT(prix_id) = $1;", [count]);
+            "HAVING COUNT(prix_id) >= 2;");
         conn.release();
         return result.rows;
     } catch (error) {
@@ -73,8 +77,8 @@ async function getMultiLaureatAsync(count) {
         throw error;
     }
 }
-const getLaureatByYear = (year, callback) => {
-    getLaureatByYearAsync(year)
+const getLaureatByYear = ( callback) => {
+    getLaureatByYearAsync()
         .then(res => {
             callback(null, res);
         })
@@ -84,13 +88,14 @@ const getLaureatByYear = (year, callback) => {
         });
 }
 
-async function getLaureatByYearAsync(year) {
+async function getLaureatByYearAsync() {
     try {
         const conn = await pool.connect();
-        const result = await conn.query("SELECT count(pa.laureat_id) as nb_laureat\n"  +
+        const result = await conn.query("SELECT count(pa.laureat_id) as \"nb_laureat\", p.year\n" +
             "FROM participe pa\n" +
             "JOIN prix p on p.id_prix = pa.prix_id\n" +
-            "WHERE p.year = $1;", [year]);
+            "GROUP BY p.year\n" +
+            "ORDER BY p.year;\n");
         conn.release();
         return result.rows;
     } catch (error) {
