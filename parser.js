@@ -1,7 +1,7 @@
 fs = require('fs');
 const {Pool} = require('pg')
 
-const connectionString = 'postgresql://tcheval3:2301@localhost:5432/bdd_tcheval3';
+const connectionString = 'postgresql://tdubreui:1811@localhost:5432/bdd_projet';
 
 const pool = new Pool({
     connectionString: connectionString,
@@ -116,7 +116,11 @@ async function tryInsertParticipations(prize, conn) {
     // Assuming prize has a property that can be used to get the prix_id
     // If not, you may need to adjust the following line to fetch or calculate the prix_id
     const prixId = await getPrixIdByYearAndCategory(prize.year, prize.category, conn);
-
+    if(prize.laureates === undefined)
+    {
+        console.log("undefined prize laureates")
+        return;
+    }
     for (const laureate of prize.laureates) {
         try {
             const query = 'INSERT INTO participe(laureat_id, prix_id, motivation, investissement) VALUES ($1, $2, $3, $4)';
